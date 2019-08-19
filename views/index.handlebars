@@ -1,0 +1,32 @@
+<h1>Burgers</h1>
+
+<h3>Burger Options</h3>
+
+<ul>
+  {{#each burgers}}
+  	<li>
+       <p>Burger: {{this.burger}}</p>
+	   <button class="munch" value="{{this.id}}">Munch</button>
+  	</li>
+  {{/each}}
+</ul>
+
+
+
+<form action="/" method="POST">
+	<textarea type="text" name="burger"></textarea>
+
+	<button type="submit">Submit</button>
+</form>
+
+<div class="eaten" style="position: absolute;" style="right: 100px;">
+	<h3>Devoured Burgers</h3>
+<ul>
+  {{#each devouredBurgers}}
+  	<li>
+  	   <p>ID: {{this.id}}</p>
+       <p>Burger: {{this.burger}}</p>
+  	</li>
+  {{/each}}
+</ul>
+</div>
