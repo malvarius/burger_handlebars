@@ -30,3 +30,19 @@
   {{/each}}
 </ul>
 </div>
+<script>
+	$('.munch').on('click', function(){
+		var ID = $(this).val();
+		console.log(ID);
+		$.ajax("/api/update",{
+			type: "PUT",
+			data:ID
+		}
+		);
+		.then(function(data){
+			console.log('data put = '+data)
+		});
+		
+	});
+</script>
+</html>

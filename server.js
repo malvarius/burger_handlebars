@@ -23,6 +23,7 @@ var connection = mysql.createConnection({
   database: "burgers_db"
 });
 
+
 connection.connect(function(err) {
   if (err) {
     console.error("error connecting: " + err.stack);
@@ -32,7 +33,7 @@ connection.connect(function(err) {
   console.log("connected as id " + connection.threadId);
 });
 
-// Root get route
+// Root get route to get an seperate burgers form database
 app.get("/", function(req, res) {
   connection.query("SELECT * FROM burgers;", function(err, data) {
     if (err) throw err;
@@ -44,6 +45,13 @@ app.get("/", function(req, res) {
       }else(notEaten.push(data[i]))
     }
     res.render("index", { burgers: notEaten, devouredBurgers: devoured });
+  });
+});
+app.put("/api/update/:id",function(req,res){
+  var id =req.params.id;
+  console.log(req.body)
+  connection.query("UPDATE burgers SET devoured = 1 WHERE id=?",[id],function(){
+res.redirect("/");
   });
 });
 
