@@ -9,7 +9,7 @@ var app = express();
 // process.env.PORT lets the port be set by Heroku
 var PORT = process.env.PORT || 8080;
 
-// Sets up the Express app to handle data parsing
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -38,21 +38,22 @@ connection.connect(function(err) {
   app.post("/", function(req, res) {
     connection.query("INSERT INTO burgers (burger) VALUES (?)", [req.body.burger], function(err, data) {
       if (err) throw err;
-      res.redirect("/");
+      res.redirect('/')
     });
   });
   app.put("/api/update/:id",function(req,res){
     var id =req.params.id;
     console.log(req.body)
     connection.query("UPDATE burgers SET devoured = 1 WHERE id=?",[id],function(err, data){
+      console.log(err)
       if (err) throw err;
-      res.redirect("/");
+      res.end();
     });
   });
   app.delete("/api/update",function(req,res){
     connection.query("DELETE from burgers WHERE devoured = 1",function(err,data){
       if(err) throw err;
-      res.redirect("/");
+      res.end();
     });
   });
 });

@@ -1,57 +1,58 @@
 <h1>Burgers</h1>
+<div class="row">
+	<div class="col-md-6">
+		<h3>Burger Options</h3>
 
-<h3>Burger Options</h3>
+		<ul>
+			{{#each burgers}}
+			<li>
+				<p>Burger: {{this.burger}}</p>
+				<button class="munch" value="{{this.id}}">Munch</button>
+			</li>
+			{{/each}}
+		</ul>
+		<form action="/" method="POST">
+			<input class="form-control" type="text" placeholder="input a burger!" name="burger">
 
-<ul>
-  {{#each burgers}}
-  	<li>
-       <p>Burger: {{this.burger}}</p>
-	   <button class="munch" value="{{this.id}}">Munch</button>
-  	</li>
-  {{/each}}
-</ul>
-
-
-
-<form action="/" method="POST">
-	<textarea type="text" name="burger"></textarea>
-
-	<button type="submit">Submit</button>
-</form>
-
-<div class="eaten" style="position: absolute;" style="right: 100px;">
-	<h3>Devoured Burgers</h3>
-<ul>
-  {{#each devouredBurgers}}
-  	<li>
-  	   <p>ID: {{this.id}}</p>
-       <p>Burger: {{this.burger}}</p>
-  	</li>
-  {{/each}}
-</ul>
-<button class="deleteBurgers">Toss Munched Burgers</button>
+			<button type="submit">Submit</button>
+		</form>
+	</div>
+	<div class="col-md-6">
+		<div class="eaten" style="position: absolute;" style="right: 100px;">
+			<h3>Devoured Burgers</h3>
+			<ul>
+				{{#each devouredBurgers}}
+				<li>
+					<p>ID: {{this.id}}</p>
+					<p>Burger: {{this.burger}}</p>
+				</li>
+				{{/each}}
+			</ul>
+			<button class="deleteBurgers">Toss Munched Burgers</button>
+		</div>
+	</div>
 </div>
 <script>
-	$(document).on('click','.munch', function(){
+	$(document).on('click', '.munch', function (event) {
+		event.preventDefault();
 		var ID = $(this).val();
 		console.log(ID);
-		$.ajax("/api/update/"+ID,{
-			type: "PUT",
-			data:ID
-		}
-		)
-		.then(function(data){
-			console.log('data put = '+data)
+		$.ajax("/api/update/" + ID, {
+			type: "PUT"
+		}).then(function (data) {
+			console.log('data put = ' + data)
+			location.reload();
 		});
-		
 	});
-	$(document).on('click','.deleteBurgers',function(){
-		$.ajax("/api/update",{
+	$(document).on('click', '.deleteBurgers', function (event) {
+		event.preventDefault();
+		$.ajax("/api/update", {
 			type: "DELETE"
-		})
-		.then(function(data){
-			console.log('data deleted');
-		});
+		}).then(function (data) {
+				console.log('data deleted');
+				window.location.assign('/')
+			});
 	})
 </script>
+
 </html>
