@@ -29,52 +29,45 @@ connection.connect(function(err) {
     console.error("error connecting: " + err.stack);
     return;
   }
-
   console.log("connected as id " + connection.threadId);
-});
-
-// Root get route to get an seperate burgers form database
-app.get("/", function(req, res) {
-  connection.query("SELECT * FROM burgers;", function(err, data) {
-    if (err) throw err;
-    var notEaten = [];
-    var devoured = [];
-    for (var i=0;i<data.length;i++){
-      if (data[i].devoured){
-        devoured.push(data[i]);
-      }else(notEaten.push(data[i]))
-    }
-    res.render("index", { burgers: notEaten, devouredBurgers: devoured });
+  app.get("/", function(req, res) {
+    connection.query("SELECT * FROM burgers;", function(err, data) {
+      if (err) throw err;
+      var notEaten = [];
+      var devoured = [];
+      for (var i=0;i<data.length;i++){
+        if (data[i].devoured){
+          devoured.push(data[i]);
+        }else(notEaten.push(data[i]))
+      }
+      res.render("index", { burgers: notEaten, devouredBurgers: devoured });
+    });
   });
-});
-app.put("/api/update/:id",function(req,res){
-  var id =req.params.id;
-  console.log(req.body)
-  connection.query("UPDATE burgers SET devoured = 1 WHERE id=?",[id],function(){
-res.redirect("/");
+  app.post("/", function(req, res) {
+    connection.query("INSERT INTO burgers (burger) VALUES (?)", [req.body.burger], function(err, data) {
+      if (err) throw err;
+      res.redirect("/");
+    });
   });
-});
-
-// Post route -> back to home
-app.post("/", function(req, res) {
-  // Test it
-  // console.log('You sent, ' + req.body.task);
-
-  // Test it
-  // return res.send('You sent, ' + req.body.task);
-
-  // When using the MySQL package, we'd use ?s in place of any values to be inserted, which are then swapped out with corresponding elements in the array
-  // This helps us avoid an exploit known as SQL injection which we'd be open to if we used string concatenation
-  // https://en.wikipedia.org/wiki/SQL_injection
-  connection.query("INSERT INTO burgers (burger) VALUES (?)", [req.body.burger], function(err, result) {
-    if (err) throw err;
-
-    res.redirect("/");
+  app.put("/api/update/:id",function(req,res){
+    var id =req.params.id;
+    console.log(req.body)
+    connection.query("UPDATE burgers SET devoured = 1 WHERE id=?",[id],function(err, data){
+      if (err) throw err;
+      res.redirect("/");
+    });
+  });
+  app.delete("/api/update",function(req,res){
+    connection.query("DELETE from burgers WHERE devoured = 1",function(err,data){
+      if(err) throw err;
+      res.redirect("/");
+    });
   });
 });
 
-// Start our server so that it can begin listening to client requests.
+
+
+
 app.listen(PORT, function() {
-  // Log (server-side) when our server has started
   console.log("Server listening on: http://localhost:" + PORT);
 });

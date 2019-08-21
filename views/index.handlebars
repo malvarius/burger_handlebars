@@ -29,20 +29,29 @@
   	</li>
   {{/each}}
 </ul>
+<button class="deleteBurgers">Toss Munched Burgers</button>
 </div>
 <script>
-	$('.munch').on('click', function(){
+	$(document).on('click','.munch', function(){
 		var ID = $(this).val();
 		console.log(ID);
-		$.ajax("/api/update",{
+		$.ajax("/api/update/"+ID,{
 			type: "PUT",
 			data:ID
 		}
-		);
+		)
 		.then(function(data){
 			console.log('data put = '+data)
 		});
 		
 	});
+	$(document).on('click','.deleteBurgers',function(){
+		$.ajax("/api/update",{
+			type: "DELETE"
+		})
+		.then(function(data){
+			console.log('data deleted');
+		});
+	})
 </script>
 </html>
