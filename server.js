@@ -1,10 +1,8 @@
 var express = require("express");
 var exphbs = require("express-handlebars");
-var mysql = require("mysql");
-var connection = require('./connection')
-
+var connection = require('./connection');
 var app = express();
-
+var orm = require('./orm')
 // Set the port of our application
 // process.env.PORT lets the port be set by Heroku
 var PORT = process.env.PORT || 8080;
@@ -23,22 +21,23 @@ connection.connect(function(err) {
   }
   console.log("connected as id " + connection.threadId);
   app.get("/", function(req, res) {
-    connection.query("SELECT * FROM burgers;", function(err, data) {
-      if (err) throw err;
-      var notEaten = [];
+    var notEaten = [];
       var devoured = [];
+      // get function queries burgers from ORM file and pushed not eaten burgers to array and devoured burgers to another array
+    orm.getAll('*','burgers',function(data){
+      if (err) throw err;
       for (var i=0;i<data.length;i++){
         if (data[i].devoured){
           devoured.push(data[i]);
         }else(notEaten.push(data[i]))
       }
       res.render("index", { burgers: notEaten, devouredBurgers: devoured });
-    });
+    })
   });
   app.post("/", function(req, res) {
-    connection.query("INSERT INTO burgers (burger) VALUES (?)", [req.body.burger], function(err, data) {
-      if (err) throw err;
-      res.redirect('/')
+    console.log(req.body)
+    orm.insertInto('burgers','burger',req.body.burger,function(data){
+      res.redirect('/');
     });
   });
   app.put("/api/update/:id",function(req,res){
