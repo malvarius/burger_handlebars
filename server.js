@@ -36,6 +36,7 @@ connection.connect(function(err) {
   });
   app.post("/", function(req, res) {
     console.log(req.body)
+    //insert into function creates to the databse table
     orm.insertInto('burgers','burger',req.body.burger,function(data){
       res.redirect('/');
     });
@@ -43,15 +44,14 @@ connection.connect(function(err) {
   app.put("/api/update/:id",function(req,res){
     var id =req.params.id;
     console.log(req.body)
-    connection.query("UPDATE burgers SET devoured = 1 WHERE id=?",[id],function(err, data){
-      console.log(err)
-      if (err) throw err;
-      res.end();
-    });
+    // orm.update updates the database table
+   orm.update(id,function(data){
+     res.end();
+   })
   });
+  // delete method
   app.delete("/api/update",function(req,res){
-    connection.query("DELETE from burgers WHERE devoured = 1",function(err,data){
-      if(err) throw err;
+    orm.delete(function(data){
       res.end();
     });
   });
