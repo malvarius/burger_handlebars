@@ -1,6 +1,6 @@
 # burger_handlebars
 
-**INSTRUCTIONAL VIDEO ON HOW TO USE:**   
+![image](https://user-images.githubusercontent.com/47836797/63717523-564c3900-c7fd-11e9-87dc-be2478c5a1a0.png)  
 
 
 Here is the link to the web application hosted on heroku:  
