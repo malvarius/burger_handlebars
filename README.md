@@ -6,7 +6,6 @@
 Here is the link to the web application hosted on heroku:  
 https://blooming-woodland-74111.herokuapp.com/  
 
-https://drive.google.com/open?id=1gEnnxdsZZ_RKTEDM_wIDoBgH0pXbJnLi
 
 You can find this app on my portfolio as well:  
 https://malvarius.github.io/bootstrap-portfolio/portfolio.html  
